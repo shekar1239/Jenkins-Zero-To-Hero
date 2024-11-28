@@ -29,19 +29,20 @@ pipeline {
         }
       }
     }
-    stage('Build and Push Docker Image') {
+    stage('Build Image') {
       environment {
-        DOCKER_IMAGE = "shekar1239/cicd-e2e:${BUILD_NUMBER}"
-        // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
-        REGISTRY_CREDENTIALS = credentials('docker-cred')
+        dockerImage = ''
+        registry = 'shekar1239/cicd-e2e'
+        registryCredential = 'docker-cred'
       }
       steps {
         script {
             sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app'
-            sh 'docker login -u shekar1239 -p 9440396482 && docker build -t ${DOCKER_IMAGE}'
-            sh 'docker push ${DOCKER_IMAGE}'
-            }
-        }
+            dockerImage = docker.build registry
+            docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+           }
+         }
       }
     }
     stage('Update Deployment File') {
