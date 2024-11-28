@@ -38,7 +38,7 @@ pipeline {
       steps {
         script {
             sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t docker-new-build .'
-            sh 'docker tag docker-new-build:latest shekar1239/cicd-e2e:latest
+            sh 'docker tag docker-new-build:latest shekar1239/cicd-e2e:latest'
             docker.withRegistry('https://registry.hub.docker.com', "docker-cred") {
                 dockerImage.push()
             }
