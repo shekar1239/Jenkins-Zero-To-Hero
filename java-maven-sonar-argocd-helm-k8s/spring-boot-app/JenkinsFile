@@ -38,7 +38,7 @@ pipeline {
       steps {
         script {
             sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker.build("shekar1239/cicd-e2e")'
-            def dockerImage = docker.image("${DOCKER_IMAGE}")
+            def dockerImage = "docker.image("${DOCKER_IMAGE}")"
             docker.withRegistry('https://registry.hub.docker.com', "docker-cred") {
                 dockerImage.push()
             }
